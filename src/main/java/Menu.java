@@ -10,9 +10,9 @@ public class Menu {
         do {
             System.out.println("******* Menu *******");
             System.out.println("Seleccione una opción:");
-            System.out.println("1. Registro Empleados");
-            System.out.println("2. Registrar Cliente");
-            System.out.println("3. Registrar Incidente");
+            System.out.println("1. Empleados");
+            System.out.println("2. Cliente");
+            System.out.println("3. Incidente");
             System.out.println("4. Listado de Técnicos");
             System.out.println("5. Salir");
             System.out.print("Opcion seleccionada: ");
@@ -22,8 +22,7 @@ public class Menu {
                     subMenuEmpleados();
                     break;
                 case 2:
-                    Cliente cli1 = Cliente.altaCliente();
-                    ConexionDB.altaClienteDB(cli1);
+                	subMenuClientes();
                 case 3:
                     SoporteServicio sop1 = SoporteServicio.altaSoporte();
                     ConexionDB.altaSoporteDB(sop1);
@@ -42,7 +41,7 @@ public class Menu {
             do {
                 do {
                     try {
-                        System.out.println("");
+                        System.out.println("******** MENU EMPLEADO **********");
                         System.out.println("1. Registrar empleado");
                         System.out.println("2. Ver lista de empleados");
                         System.out.println("3. Buscar empleado por CUIT");
@@ -50,6 +49,7 @@ public class Menu {
                         System.out.println("5. Regresar al menú principal");
                         System.out.print("Indique la opción: ");
                         opciones_empleados = opcion_menu_empleados.nextInt();
+                        opcion_menu_empleados.nextLine();
                     } catch (InputMismatchException e) {
                         bandera = true;
                         opcion_menu_empleados.nextLine();
@@ -85,7 +85,60 @@ public class Menu {
             } while (opciones_empleados != 5);
         }
 
-        // Otros métodos y clases aquí...
+    public static void subMenuClientes() {
+
+        int opciones_clientes = 0;
+        
+        
+        Scanner opcion_menu_clientes = new Scanner(System.in);
+        boolean bandera = false;
+
+        do {
+            do {
+                try {
+                    System.out.println("********MENU CLIENTE*********");
+                    System.out.println("1. Registrar Clientes");
+                    System.out.println("2. Ver lista de Clientes");
+                    System.out.println("3. Borrar Ciente");
+                    System.out.println("4. Modificar Cliente");
+                    System.out.println("5. Regresar al menú Principal");
+                    System.out.print("Indique la opción: ");
+                    opciones_clientes = opcion_menu_clientes.nextInt();
+                } catch (InputMismatchException e) {
+                    bandera = true;
+                    opcion_menu_clientes.nextLine();
+                    System.out.println("Opción no válida o inexistente");
+                    System.out.println("Por favor ingrese una opción nuevamente");
+                }
+            } while (bandera);
+
+            switch (opciones_clientes) {
+                case 1:
+                	Cliente cli1 = Cliente.altaCliente();
+                    ConexionDB.altaClienteDB(cli1);
+                    break;
+                case 2:
+                    ConexionDB.listarClientes();
+                    break;
+                case 3:
+                    System.out.print("Ingrese el Id del cliente a Borrar: ");
+                    int  IdCliente = opcion_menu_clientes.nextInt();
+                    ConexionDB.borrarCliente(IdCliente);
+                    break;
+                case 4:
+                	System.out.print("Ingrese el Id del cliente a Modificar: ");
+                	int  IdClienteActualizar = opcion_menu_clientes.nextInt();
+                	Cliente cli2 = Cliente.altaCliente();
+                	ConexionDB.actualizarCliente(IdClienteActualizar, cli2);
+                    break;
+                case 5:
+                    menuPrincipal();
+                    break;
+                default:
+                    System.out.println("Opción no válida o inexistente");
+            }
+        } while (opciones_clientes != 5);
+    }
     }
 
 //**hacer un menu con opciones para: ABM cliente -- Repotar  Incidente--listar técnicos - salir

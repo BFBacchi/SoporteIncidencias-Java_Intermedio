@@ -21,7 +21,7 @@ public class Cliente {
 	 String nomCliente;
 	 String apeCliente;
 	 String direCliente;
-	 String    celCliente;
+	 String celCliente;
 	 String mailCliente;
 	 final LocalDate altaCliente = LocalDate.now();
 	 String contratos;
@@ -54,7 +54,7 @@ public static Cliente altaCliente() {
 			
 		//System.out.println(cliente1.toString());
 
-		entrada.close();
+		entrada.nextLine();
 		return cliente1;
 		}
 

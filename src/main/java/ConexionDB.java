@@ -59,6 +59,89 @@ public class ConexionDB {
 		}
 	  
   }
+//******************LISTAR CLIENTES
+public static void listarClientes() {
+   String consulta = "SELECT * FROM cliente";
+
+   try {
+       ResultSet sql = sT.executeQuery(consulta);
+
+       System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+       System.out.printf("| %-5s | %-15s | %-20s | %-10s | %-15s | %-25s | %-20s | %-20s | %-15s | %-15s |\n",
+               "ID", "Cuit", "Razón Social", "Nombre", "Apellido", "Dirección", "Teléfono", "Correo", "Contrato", "Alta Cliente");
+       System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+       while (sql.next()) {
+           System.out.printf("| %-5d | %-15s | %-20s | %-10s | %-15s | %-25s | %-20s | %-20s | %-15s | %-15s |\n",
+                   sql.getInt(1), sql.getString(2), sql.getString(3),
+                   sql.getString(4), sql.getString(5), sql.getString(6),
+                   sql.getString(7), sql.getString(8), sql.getString(9),
+                   sql.getString(10));
+       }
+
+       System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+   } catch (SQLException e) {
+       System.out.println("Error en el select de la tabla CLIENTE: " + e);
+       e.printStackTrace();
+   } finally {
+       // Llamada al método menuPrincipal() al final de la ejecución
+       Menu.subMenuClientes();
+   }
+}
+public static void borrarCliente(int idCliente) {
+    String consulta = "DELETE FROM cliente WHERE idCli = ?";
+
+    try {
+        PreparedStatement sqlUp = conX.prepareStatement(consulta);
+        sqlUp.setInt(1, idCliente);
+
+        int filasBorradas = sqlUp.executeUpdate();
+
+        if (filasBorradas > 0) {
+            System.out.println("Cliente borrado con éxito");
+        } else {
+            System.out.println("No se encontró ningún cliente con el ID: " + idCliente);
+        }
+
+    } catch (SQLException obj) {
+        System.out.println("Error al borrar cliente: " + obj);
+        obj.printStackTrace();
+    }
+}
+public static void actualizarCliente(int idCliente, Cliente cli) {
+    String consulta = "UPDATE cliente SET cuit=?, razonS=?, nom=?, ape=?, dire=?, cel=?, mail=?, contrato=? WHERE idCli=?";
+
+    try {
+        PreparedStatement sqlUp = conX.prepareStatement(consulta);
+
+        sqlUp.setString(1, cli.getCuitCliente());
+        sqlUp.setString(2, cli.getRazonSocial());
+        sqlUp.setString(3, cli.getNomCliente());
+        sqlUp.setString(4, cli.getApeCliente());
+        sqlUp.setString(5, cli.getDireCliente());
+        sqlUp.setString(6, cli.getCelCliente());
+        sqlUp.setString(7, cli.getMailCliente());
+        sqlUp.setString(8, cli.getContratos());
+        sqlUp.setInt(9, idCliente);
+
+        int filasActualizadas = sqlUp.executeUpdate();
+
+        if (filasActualizadas > 0) {
+            System.out.println("Cliente actualizado con éxito");
+        } else {
+            System.out.println("No se encontró ningún cliente con el ID: " + idCliente);
+        }
+
+    } catch (SQLException obj) {
+        System.out.println("Error al actualizar cliente: " + obj);
+        obj.printStackTrace();
+    }
+}
+
+
+
+
+
  
  //*************ALTA EMPLEADO
  public static void altaEmpleadoDB(Empleado emp1) {
@@ -96,10 +179,10 @@ public static void listarEmpleado() {
 	try {
 		ResultSet sql = sT.executeQuery(consulta);
 
-		System.out.println("---------------------------------------------------------------");
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
 		System.out.printf("| %-5s | %-15s | %-15s | %-15s | %-15s | %-15s | %-15s | %-15s |\n",
-				"ID", "Nombre", "Apellido", "Fecha Nac.", "Dirección", "Teléfono", "Correo", "Puesto");
-		System.out.println("---------------------------------------------------------------");
+				"ID", "Cuit", "Nombre", "Apellido.", "Dirección", "Teléfono", "Correo", "Alta");
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
 
 		while (sql.next()) {
 			System.out.printf("| %-5d | %-15s | %-15s | %-15s | %-15s | %-15s | %-15s | %-15s |\n",
@@ -108,13 +191,13 @@ public static void listarEmpleado() {
 					sql.getString(7), sql.getString(8));
 		}
 
-		System.out.println("---------------------------------------------------------------");
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
 	} catch (SQLException e) {
 		System.out.println("Error en el select de la tabla EMPLEADO: " + e);
 		e.printStackTrace();
 	} finally {
 		// Llamada al método menuPrincipal() al final de la ejecución
-		Menu.menuPrincipal();
+		Menu.subMenuEmpleados();
 	}
 }
 
